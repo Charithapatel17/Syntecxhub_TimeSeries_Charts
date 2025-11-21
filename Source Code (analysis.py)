@@ -1,0 +1,77 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+# Create output folder
+if not os.path.exists("../charts"):
+    os.makedirs("../charts")
+
+# Load data
+df = pd.read_csv("../data/sales_data.csv")
+
+# Convert date column
+df["date"] = pd.to_datetime(df["date"])
+df["month"] = df["date"].dt.to_period("M")
+df["quarter"] = df["date"].dt.to_period("Q")
+
+# 1. Time Series Line Chart
+
+plt.figure(figsize=(10, 5))
+plt.plot(df["date"], df["sales"], marker="o")
+plt.title("Sales Over Time")
+plt.xlabel("Date")
+plt.ylabel("Sales")
+plt.tight_layout()
+plt.savefig("../charts/sales_over_time.png")
+plt.close()
+
+# 2. Monthly Aggregation
+
+monthly_sales = df.groupby("month")["sales"].sum()
+
+plt.figure(figsize=(10, 5))
+monthly_sales.plot(kind="line", marker="o")
+plt.title("Monthly Sales Aggregation")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.tight_layout()
+plt.savefig("../charts/monthly_sales.png")
+plt.close()
+
+# 3. Quarterly Aggregation
+
+quarterly_sales = df.groupby("quarter")["sales"].sum()
+
+plt.figure(figsize=(10, 5))
+quarterly_sales.plot(kind="bar")
+plt.title("Quarterly Sales")
+plt.xlabel("Quarter")
+plt.ylabel("Sales")
+plt.tight_layout()
+plt.savefig("../charts/quarterly_sales.png")
+plt.close()
+
+# 4. Category Bar Chart
+
+category_sum = df.groupby("category")["sales"].sum()
+
+plt.figure(figsize=(8, 5))
+category_sum.plot(kind="bar")
+plt.title("Sales by Category")
+plt.xlabel("Category")
+plt.ylabel("Total Sales")
+plt.tight_layout()
+plt.savefig("../charts/category_sales_bar.png")
+plt.close()
+
+# 5. Category Pie Chart
+
+plt.figure(figsize=(7, 7))
+category_sum.plot(kind="pie", autopct='%1.1f%%')
+plt.title("Category Sales Share")
+plt.ylabel("")
+plt.tight_layout()
+plt.savefig("../charts/category_sales_pie.png")
+plt.close()
+
+print("All charts generated and saved in /charts folder!")
