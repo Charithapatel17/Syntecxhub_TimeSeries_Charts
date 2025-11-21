@@ -1,0 +1,12 @@
+Syntecxhub_TimeSeries_Charts/
+│
+├── data/
+│   └── sales_data.csv
+│
+├── charts/
+│   └── (automatically saved PNG files)
+│
+├── src/
+│   └── analysis.py
+│
+└── README.md
